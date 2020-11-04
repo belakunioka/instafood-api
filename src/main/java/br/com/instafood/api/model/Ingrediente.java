@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-public class Inrediente {
+public class Ingrediente {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
