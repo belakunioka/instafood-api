@@ -1,6 +1,7 @@
 package br.com.instafood.api.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -17,38 +20,62 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "receita")
+@Getter @Setter
 @NoArgsConstructor
+
 public class Receita {
 	
 	@Id @Column(name = "id") 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Getter @Setter private int id;	
+	private int id;	
 	
 	@Column(name = "titulo")
-	@Getter @Setter private String titulo;
+	private String titulo;
 	
 	@Column(name = "image")
-	@Getter @Setter private String image;
+	private String image;
 	
 	@Column(name="data_criacao")
-	@Getter @Setter private Date dataCriacao;
+	private Date dataCriacao;
 	
 	@Column(name="tipo", columnDefinition="enum('Doce', 'Salgado')")
-	@Getter @Setter private String tipo;
+	private String tipo;
 
 	@Column(name="tempo_preparo")
-	@Getter @Setter private String tempoPreparo;
+	private String tempoPreparo;
 	
 	@Column(name="rendimento")
-	@Getter @Setter private String rendimento;
+	private String rendimento;
 	
 	@Column(name="instrucoes")
-	@Getter @Setter private String instrucoes;
+	private String instrucoes;
 	
 	@Column(name="autor_id")
-	@Getter @Setter private int autorId;
+	private int autorId;
 	
 	@ManyToOne
 	@JoinColumn(name = "autor_id", insertable=false, updatable=false)
 	private Usuario usuario;
+	
+	@ManyToMany
+	@JoinTable(name="utensilio", joinColumns = {
+			@JoinColumn(name="id", nullable=false)}, inverseJoinColumns = {
+					@JoinColumn(name="id", nullable=false)
+	})
+	private List <Utensilio> utensilios;
+	
+	@ManyToMany
+	@JoinTable(name="ingrediente", joinColumns = {
+			@JoinColumn(name="id", nullable=false)}, inverseJoinColumns = {
+					@JoinColumn(name="id", nullable=false)
+	})
+	private List <Ingrediente> ingredientes;
+	
+	@ManyToMany
+	@JoinTable(name="tag", joinColumns = {
+			@JoinColumn(name="id", nullable=false)}, inverseJoinColumns = {
+					@JoinColumn(name="id", nullable=false)
+	})
+	private List <Tag> tags;
+	
 }
