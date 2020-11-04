@@ -5,31 +5,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @NoArgsConstructor
-public class Receita {
+public class Inrediente {
 
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idReceita;
+    @Getter private int idIngrediente;
     
-    private String nome;
+    @Getter @Setter private String nome;
     
-    public Receita(String nome) {
+    public Ingrediente(String nome) {
         this.nome = nome;
-    }
-
-    public String getIdReceita(){
-        return this.idReceita;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getNome(){
-        return this.nome;
     }
 }
