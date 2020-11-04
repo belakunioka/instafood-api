@@ -1,5 +1,6 @@
 package br.com.instafood.api.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,13 +14,13 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Ingrediente {
 
-    @Id
+    @Id @Column(name = "id") 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter private int idIngrediente;
     
-    @Getter @Setter private String nome;
+    @Getter @Setter private String titulo;
     
-    public Ingrediente(String nome) {
-        this.nome = nome;
+    public Ingrediente(String titulo) {
+        this.titulo = titulo;
     }
 }
