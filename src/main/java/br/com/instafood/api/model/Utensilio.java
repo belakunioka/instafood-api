@@ -10,12 +10,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+//@Entity
 @NoArgsConstructor
 public class Utensilio {
 
     @Id @Column(name = "id") 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter private int idUtensilio;
     
     @Getter @Setter private String nome;

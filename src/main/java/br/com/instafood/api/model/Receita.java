@@ -18,15 +18,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "receita")
+//@Entity
+//@Table(name = "receita")
 @Getter @Setter
 @NoArgsConstructor
 
 public class Receita {
 	
 	@Id @Column(name = "id") 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;	
 	
 	@Column(name = "titulo")
@@ -69,7 +69,7 @@ public class Receita {
 			@JoinColumn(name="id", nullable=false)}, inverseJoinColumns = {
 					@JoinColumn(name="id", nullable=false)
 	})
-	private List <Ingrediente> ingredientes;
+	private List <Produto> ingredientes;
 	
 	@ManyToMany
 	@JoinTable(name="tag", joinColumns = {
