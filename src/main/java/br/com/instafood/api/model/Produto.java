@@ -12,16 +12,15 @@ import lombok.Setter;
 
 //@Entity
 @NoArgsConstructor
-public class Utensilio {
+public class Produto {
 
     @Id @Column(name = "id") 
 	//@GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter private int idUtensilio;
+    @Getter private int idIngrediente;
     
-    @Getter @Setter private String nome;
+    @Getter @Setter private String titulo;
     
-    public Utensilio(String nome) {
-        this.nome = nome;
+    public Produto(String titulo) {
+        this.titulo = titulo;
     }
 }
-

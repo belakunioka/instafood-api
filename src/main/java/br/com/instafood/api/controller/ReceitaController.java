@@ -18,7 +18,7 @@ import br.com.instafood.api.repository.ReceitaRepository;
 @RestController
 @RequestMapping(path = "receitas")
 public class ReceitaController {
-	
+	/*
 	@Autowired
 	public ReceitaRepository receitaRepository;
 	
@@ -46,4 +46,5 @@ public class ReceitaController {
 	public void deleteReceita(@PathVariable int id) {
 		receitaRepository.deleteById(id);
 	}
+	*/
 }
