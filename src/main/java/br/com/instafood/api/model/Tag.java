@@ -11,13 +11,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//@Entity
-//@Table(name = "tag") 
+@Entity
+@Table(name = "tag") 
 @NoArgsConstructor
 public class Tag {
 
 	@Id @Column(name = "id") 
-	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Getter @Setter private int id;
 	
 	@Column (name = "nome")
