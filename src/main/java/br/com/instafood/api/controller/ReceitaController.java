@@ -19,7 +19,7 @@ import br.com.instafood.api.model.errors.ObjetoNaoEncontradoException;
 import br.com.instafood.api.repository.ReceitaRepository;
 
 @RestController
-@RequestMapping(path = "receitas")
+@RequestMapping("receitas")
 public class ReceitaController {
 	
 	@Autowired
@@ -58,6 +58,7 @@ public class ReceitaController {
 		Iterable<Receita> receitas = receitaRepository.findAll();
 		return ResponseEntity.status(HttpStatus.OK).body(receitas);
 	}
+
 	
 	@GetMapping("{id}")
 	public ResponseEntity<Receita> findReceitabyId(@PathVariable int id) {
@@ -65,16 +66,15 @@ public class ReceitaController {
 		return ResponseEntity.status(HttpStatus.OK).body(receita);
 	}
 	
-	@GetMapping("{utensilio}")
-	public ResponseEntity<Receita> findReceitabyUtensilio(@PathVariable String nome) {
-		Receita receita = receitaRepository.findByUtensilio_nome(nome);
-		return ResponseEntity.status(HttpStatus.OK).body(receita);
-	}
+//	@GetMapping("{utensilio}")
+//	public ResponseEntity<Receita> findReceitabyUtensilio(@PathVariable String nome) {
+//		return;
+//	}
+//	
+//	@GetMapping("{tag}")
+//	public ResponseEntity<Receita> findReceitabyTag(@PathVariable String nome) {
+//		return;
+//	}
 	
-	@GetMapping("{tag}")
-	public ResponseEntity<Receita> findReceitabyTag(@PathVariable String nome) {
-		Receita receita = receitaRepository.findByTag_nome(nome);
-		return ResponseEntity.status(HttpStatus.OK).body(receita);
-	}
 	
 }

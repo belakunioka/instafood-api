@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -24,7 +23,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "receita")
 @Getter @Setter
 @NoArgsConstructor
 
@@ -42,7 +40,7 @@ public class Receita {
 	@NotNull
 	private String image;
 	
-	@Column(name="data_criacao")
+	@Column(name="data_criacao", columnDefinition="DEFAULT CURRENT_TIMESTAMP ")
 	@NotNull
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date dataCriacao;
@@ -63,13 +61,13 @@ public class Receita {
 	@NotNull
 	private String instrucoes;
 	
-	@Column(name="autor_id")
+	@Column(name="usuario_id")
 	@NotNull
-	private int autorId;
+	private int usuarioId;
 	
 	@ManyToOne
 	@NotNull
-	@JoinColumn(name = "autor_id", insertable=false, updatable=false)
+	@JoinColumn(name = "usuario_id", insertable=false, updatable=false)
 	private Usuario usuario;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
