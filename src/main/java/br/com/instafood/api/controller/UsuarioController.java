@@ -1,7 +1,5 @@
 package br.com.instafood.api.controller;
 
-import java.util.Date;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -45,7 +43,6 @@ public class UsuarioController {
 		if (usuarioRepository.existsByEmail(usuario.getEmail())) 
 			throw new ObjetoJaExisteException("Usuário com e-mail '" + usuario.getEmail() + "' já existe");
 		
-		usuario.setDataCriacao(new Date());
 		usuario.setAtivo(true);
 		usuario.setConfirmado(false);
 		usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
@@ -61,6 +58,8 @@ public class UsuarioController {
 		if (usuario == null)
 			throw new ObjetoNaoEncontradoException("Usuário ID " + usuarioAtualizado.getId() + "não foi encontrado");
 	
+		usuario.setNome(usuarioAtualizado.getNome());
+		usuario.setEmail(usuarioAtualizado.getEmail());
 		usuario.setAtivo(usuarioAtualizado.isAtivo());		
 		usuarioRepository.save(usuario);
 		

@@ -1,6 +1,6 @@
 package br.com.instafood.api.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,7 +53,7 @@ public class Usuario {
 	
 	@Column
 	@ToString.Exclude
-	@JsonProperty(access = Access.WRITE_ONLY)
+	//@JsonProperty(access = Access.WRITE_ONLY)
 	@NotNull(message = "O campo senha não pode ser nulo", 
 		groups = { NaCriacao.class })
 	@Size(min = 6, max = 16, message = "O campo senha deve conter entre 6 e 16 caracteres", 
@@ -62,16 +62,16 @@ public class Usuario {
 	
 	@Transient
 	@ToString.Exclude
-	@JsonProperty(access = Access.WRITE_ONLY)
+	//@JsonProperty(access = Access.WRITE_ONLY)
 	@NotNull(message = "O campo confirmação de senha não pode ser nulo", 
 		groups = { NaCriacao.class })
 	@Size(min = 6, max = 16, message = "O campo confirmação de senha deve conter entre 6 e 16 caracteres", 
 		groups = NaCriacao.class)
 	private String confirmacaoSenha;
 	
-	@Column
+	@Column(columnDefinition = "DEFAULT CURRENT_TIMESTAMP")
 	@JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
-	private Date dataCriacao;
+	private LocalDateTime dataCriacao;
 	
 	@Column
 	private boolean ativo;
@@ -79,7 +79,7 @@ public class Usuario {
 	@Column
 	private boolean confirmado;
 	
-	@Column(columnDefinition = "enum('ADMIN', 'USER')")
+	@Column(columnDefinition = "ENUM('ADMIN', 'USER')")
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String perfil = "USER";
 	
