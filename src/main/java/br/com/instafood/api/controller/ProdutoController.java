@@ -72,7 +72,7 @@ public class ProdutoController {
 		return ResponseEntity.status(HttpStatus.OK).body(produtos);
     }
     
-    @GetMapping("{id}")
+    @GetMapping("id/{id}")
 	public ResponseEntity<Produto> findProdutosbyId(@PathVariable int id) {
 
         if(produtoRepository.findById(id).isPresent()){
@@ -83,7 +83,7 @@ public class ProdutoController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
     
-    @GetMapping("{nome}")
+    @GetMapping("nome/{nome}")
 	public ResponseEntity<Produto> findProdutobyNome(@PathVariable String nome) {
 
         if(produtoRepository.findByNome(nome) != null){
