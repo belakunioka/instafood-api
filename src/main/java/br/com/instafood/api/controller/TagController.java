@@ -49,7 +49,7 @@ public class TagController {
 		if (tag == null)
 			throw new ObjetoNaoEncontradoException("Tag ID " + tagAtualizada.getId() + "não foi encontrada");
 	
-		tag.setNome(tagAtualizada.getNome());	
+		tag.setNome(tagAtualizada.getNome());
 		tagRepository.save(tag);
 		
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(tag);
@@ -72,7 +72,7 @@ public class TagController {
 		return ResponseEntity.status(HttpStatus.OK).body(tags);
     }
     
-    @GetMapping("{id}")
+    @GetMapping("id/{id}")
 	public ResponseEntity<Tag> findTagbyId(@PathVariable int id) {
 
         if(tagRepository.findById(id).isPresent()){
@@ -83,7 +83,7 @@ public class TagController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
     
-    @GetMapping("{nome}")
+    @GetMapping("nome/{nome}")
 	public ResponseEntity<Tag> findTagbyNome(@PathVariable String nome) {
 
         if(tagRepository.findByNome(nome) != null){
