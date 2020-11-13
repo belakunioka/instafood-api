@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,13 +15,16 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Produto {
 
-    @Id @Column(name = "id") 
+    @Id
+    @Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter private int id;
     
-    @Getter @Setter private String titulo;
+    @Column(unique = true)
+    @NotNull
+    @Getter @Setter private String nome;
     
-    public Produto(String titulo) {
-        this.titulo = titulo;
+    public Produto(String nome) {
+        this.nome = nome;
     }
 }
