@@ -1,6 +1,7 @@
 package br.com.instafood.api.controller;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.instafood.api.model.Receita;
@@ -66,15 +68,10 @@ public class ReceitaController {
 		return ResponseEntity.status(HttpStatus.OK).body(receita);
 	}
 	
-//	@GetMapping("{utensilio}")
-//	public ResponseEntity<Receita> findReceitabyUtensilio(@PathVariable String nome) {
-//		return;
-//	}
-//	
-//	@GetMapping("{tag}")
-//	public ResponseEntity<Receita> findReceitabyTag(@PathVariable String nome) {
-//		return;
-//	}
-	
-	
+	@PostMapping("receitasfiltradas")
+	public ResponseEntity<Iterable<Receita>> findAllByParams(@RequestParam("ingredientes") List<Integer> ingredientes, 
+			@RequestParam("utensilios") List<Integer> utensilios, @RequestParam("tags") List<Integer> tags){
+		Iterable<Receita> receitasComFiltros = receitaRepository.findByParams(ingredientes, utensilios, tags);
+		return ResponseEntity.status(HttpStatus.OK).body(receitasComFiltros);
+	}	
 }
