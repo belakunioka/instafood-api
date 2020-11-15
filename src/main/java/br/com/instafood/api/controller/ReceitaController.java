@@ -69,9 +69,9 @@ public class ReceitaController {
 	}
 	
 	@PostMapping("receitasfiltradas")
-	public ResponseEntity<Iterable<Receita>> findAllByParams(@RequestParam("ingredientes") List<Integer> ingredientes, 
-			@RequestParam("utensilios") List<Integer> utensilios, @RequestParam("tags") List<Integer> tags){
-		Iterable<Receita> receitasComFiltros = receitaRepository.findByParams(ingredientes, utensilios, tags);
-		return ResponseEntity.status(HttpStatus.OK).body(receitasComFiltros);
+	public ResponseEntity<Iterable<Receita>> findAllByParams(@RequestParam List<Integer> ingredientes, 
+			@RequestParam List<Integer> utensilios, @RequestParam List<Integer> tags){
+		Iterable<Receita> receitasComFiltros = receitaRepository.saveAll(ingredientes, utensilios, tags);
+		return ResponseEntity.status(HttpStatus.CREATED).body(receitasComFiltros);
 	}	
 }
