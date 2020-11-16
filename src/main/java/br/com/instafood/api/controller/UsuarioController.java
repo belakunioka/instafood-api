@@ -1,9 +1,17 @@
 package br.com.instafood.api.controller;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.instafood.api.model.Usuario;
 import br.com.instafood.api.model.errors.ObjetoJaExisteException;
@@ -36,6 +45,9 @@ public class UsuarioController {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+
+	@Value("${files.upload-dir}")
+	private String diretorioUpload;
 	
 	@PostMapping
 	public ResponseEntity<Usuario> createUsuario(@Validated(NaCriacao.class) @RequestBody Usuario usuario) throws Throwable {
@@ -76,6 +88,27 @@ public class UsuarioController {
 		usuarioRepository.deleteById(id);
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	}
+	
+	@PatchMapping("/perfil/imagem")
+	public ResponseEntity<Object> uploadImagemUsuario(@RequestParam int id, @RequestParam MultipartFile imagem) throws Throwable {
+		
+		// Obtém a extensão do arquivo
+		String extensao = FilenameUtils.getExtension(imagem.getOriginalFilename());
+		
+		// Constrói o nome do arquivo baseado no id do usuário
+		String nomeDoArquivo = "usuario" + id + "." + extensao;
+		
+		// Salva o arquivo na pasta de imagens
+		Path caminho = Paths.get(diretorioUpload + File.separator + nomeDoArquivo);
+		Files.copy(imagem.getInputStream(), caminho, StandardCopyOption.REPLACE_EXISTING);
+		
+		// Salva o nome da imagem no perfil do usuário (vai ser sempre o mesmo nome)
+		Usuario usuario = usuarioRepository.findById(id);
+		usuario.setImagem(nomeDoArquivo);
+		usuarioRepository.save(usuario);
+		
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuario);
 	}
 	
 	// TODO Incluir critérios de busca e paginação
