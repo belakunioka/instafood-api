@@ -30,7 +30,7 @@ public class ProdutoController {
     private ProdutoRepository produtoRepository;
     
     @PostMapping
-	public ResponseEntity<Produto> createUsuario(@Validated(NaCriacao.class) @RequestBody Produto produto) throws Throwable {
+	public ResponseEntity<Produto> createProduto(@Validated(NaCriacao.class) @RequestBody Produto produto) throws Throwable {
 		
 		if (produtoRepository.findByNome(produto.getNome()) != null)
 			throw new ObjetoJaExisteException("Produto com nome '" + produto.getNome() + "' já existe");
