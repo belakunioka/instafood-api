@@ -1,5 +1,6 @@
 package br.com.instafood.api.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,9 +15,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,8 +43,7 @@ public class Receita {
 	@NotNull
 	private String image;
 	
-	@Column(name="data_criacao", columnDefinition="DEFAULT CURRENT_TIMESTAMP ")
-	@NotNull
+	@Column(name="data_criacao", columnDefinition="DATETIME DEFAULT CURRENT_TIMESTAMP")
 	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date dataCriacao;
 	
@@ -75,20 +77,17 @@ public class Receita {
 			@JoinColumn(name="receita_id", nullable=false)}, inverseJoinColumns = {
 					@JoinColumn(name="utensilio_id", nullable=false)
 	})
-	private List <Utensilio> utensilios;
+	private List <Utensilio> utensilios = new ArrayList<Utensilio>();
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name="receita_ingrediente", joinColumns = {
-			@JoinColumn(name="receita_id", nullable=false)}, inverseJoinColumns = {
-					@JoinColumn(name="ingrediente_id", nullable=false)
-	})
-	private List <Produto> ingredientes;
+	@OneToMany(mappedBy = "receita")
+	@JsonManagedReference
+	private List <Ingrediente> ingredientes = new ArrayList<Ingrediente>();
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name="receita_tag", joinColumns = {
 			@JoinColumn(name="receita_id", nullable=false)}, inverseJoinColumns = {
 					@JoinColumn(name="tag_id", nullable=false)
 	})
-	private List <Tag> tags;
+	private List <Tag> tags = new ArrayList<Tag>();
 		
 }

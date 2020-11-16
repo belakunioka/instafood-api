@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,12 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.instafood.api.model.CriteriosDeBusca;
 import br.com.instafood.api.model.Receita;
 import br.com.instafood.api.model.errors.ObjetoNaoEncontradoException;
 import br.com.instafood.api.repository.ReceitaRepository;
+import br.com.instafood.api.service.ReceitaService;
 
 @RestController
 @RequestMapping("receitas")
@@ -26,6 +28,9 @@ public class ReceitaController {
 	
 	@Autowired
 	public ReceitaRepository receitaRepository;
+	
+	@Autowired
+	public ReceitaService receitaService;
 	
 	@PostMapping
 	public ResponseEntity<Receita> createReceita(@RequestBody Receita receita) {
@@ -67,11 +72,15 @@ public class ReceitaController {
 		Receita receita = receitaRepository.findById(id);
 		return ResponseEntity.status(HttpStatus.OK).body(receita);
 	}
-	
-	@PostMapping("receitasfiltradas")
-	public ResponseEntity<Iterable<Receita>> findAllByParams(@RequestParam List<Integer> ingredientes, 
-			@RequestParam List<Integer> utensilios, @RequestParam List<Integer> tags){
-		Iterable<Receita> receitasComFiltros = receitaRepository.saveAll(ingredientes, utensilios, tags);
-		return ResponseEntity.status(HttpStatus.CREATED).body(receitasComFiltros);
+
+	@PostMapping("busca")
+	public ResponseEntity<?> findAllByParams(@RequestBody CriteriosDeBusca criterios){
+		List<Receita> receitas = receitaService.buscarReceitas(criterios);
+		
+		PagedListHolder<Receita> pagina = new PagedListHolder<Receita>(receitas);
+		pagina.setPageSize(criterios.getTamanho());
+		pagina.setPage(criterios.getPagina());
+		
+		return ResponseEntity.status(HttpStatus.OK).body(pagina.getPageList());
 	}	
 }
