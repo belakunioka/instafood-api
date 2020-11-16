@@ -7,5 +7,5 @@ import br.com.instafood.api.model.Utensilio;
 
 public interface UtensilioRepository extends CrudRepository<Utensilio, Integer> {
 
-    Tag findByNome(String nome);
+    Utensilio findByNome(String nome);
 }
