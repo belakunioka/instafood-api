@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Ingrediente {
 	
-	@Id @Column(name = "id") 
+	@Id @Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter private int id;
 	
