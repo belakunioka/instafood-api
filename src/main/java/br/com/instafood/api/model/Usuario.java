@@ -13,6 +13,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -52,6 +54,9 @@ public class Usuario {
 	private String email;
 	
 	@Column
+	private String imagem;
+	
+	@Column
 	@ToString.Exclude
 	//@JsonProperty(access = Access.WRITE_ONLY)
 	@NotNull(message = "O campo senha não pode ser nulo", 
@@ -69,7 +74,7 @@ public class Usuario {
 		groups = NaCriacao.class)
 	private String confirmacaoSenha;
 	
-	@Column(columnDefinition = "DEFAULT CURRENT_TIMESTAMP")
+	@Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
 	@JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
 	private LocalDateTime dataCriacao;
 	
