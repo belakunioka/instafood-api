@@ -2,12 +2,13 @@ package br.com.instafood.api.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,10 +22,16 @@ public class Ingrediente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter private int id;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "produto_id", nullable = false)
+	@ManyToOne
+	@JoinColumn(nullable=false)
+	@JsonBackReference
+	@Getter @Setter private Receita receita;
+	
+	@ManyToOne
+	@JoinColumn(nullable = false)
 	@Getter @Setter private Produto produto;
 	
+	@Column(columnDefinition = "DECIMAL(2, 5) DEFAULT 0.0")
 	@Getter @Setter private int quantidade;
 	
 	@Getter @Setter private String unidade;
