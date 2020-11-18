@@ -46,7 +46,7 @@ public class UsuarioController {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	@Value("${files.upload-dir}")
+	@Value("${usuarios.upload-dir}")
 	private String diretorioUpload;
 	
 	@PostMapping
