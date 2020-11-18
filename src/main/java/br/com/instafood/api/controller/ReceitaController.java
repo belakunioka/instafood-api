@@ -1,9 +1,16 @@
 package br.com.instafood.api.controller;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +21,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.instafood.api.model.CriteriosDeBusca;
 import br.com.instafood.api.model.Receita;
@@ -25,6 +34,9 @@ import br.com.instafood.api.service.ReceitaService;
 @RestController
 @RequestMapping("receitas")
 public class ReceitaController {
+	
+	@Value("${receitas.upload-dir}")
+	private String diretorioUpload;
 	
 	@Autowired
 	public ReceitaRepository receitaRepository;
@@ -39,6 +51,19 @@ public class ReceitaController {
 		Receita novaReceita = receitaRepository.save(receita);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(novaReceita);
+	}
+	
+	@PatchMapping("receita/imagem")
+	public ResponseEntity<Object> uploadImagemReceita(@RequestParam int id, @RequestParam MultipartFile imagem) throws Throwable {
+		String extensao = FilenameUtils.getExtension(imagem.getOriginalFilename());
+		String nomeDoArquivo = "receita" + id + "." + extensao;
+		Path caminho = Paths.get(diretorioUpload + File.separator + nomeDoArquivo);
+		Files.copy(imagem.getInputStream(), caminho, StandardCopyOption.REPLACE_EXISTING);
+		Receita receita = receitaRepository.findById(id);
+		receita.setImagem(nomeDoArquivo);
+		receitaRepository.save(receita);
+		
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(receita);
 	}
 	
 	@PatchMapping

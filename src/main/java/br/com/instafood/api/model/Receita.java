@@ -39,9 +39,9 @@ public class Receita {
 	@NotNull
 	private String titulo;
 	
-	@Column(name = "image")
+	@Column(name = "imagem")
 	@NotNull
-	private String image;
+	private String imagem;
 	
 	@Column(name="data_criacao", columnDefinition="DATETIME DEFAULT CURRENT_TIMESTAMP")
 	@JsonFormat(pattern = "dd-MM-yyyy")
@@ -59,13 +59,9 @@ public class Receita {
 	@NotNull
 	private String rendimento;
 	
-	@Column(name="instrucoes")
+	@Column(name="instrucoes", columnDefinition="TEXT")
 	@NotNull
 	private String instrucoes;
-	
-	@Column(name="usuario_id")
-	@NotNull
-	private int usuarioId;
 	
 	@ManyToOne
 	@NotNull
