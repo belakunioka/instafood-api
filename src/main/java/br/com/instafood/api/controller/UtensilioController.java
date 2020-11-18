@@ -22,6 +22,8 @@ import br.com.instafood.api.validators.NaCriacao;
 
 import br.com.instafood.api.validators.NaAtualizacao;
 
+
+
 @RestController
 @RequestMapping("utensilio")
 public class UtensilioController {
@@ -29,19 +31,19 @@ public class UtensilioController {
     @Autowired
     private UtensilioRepository utensilioRepository;
     
-//    @PostMapping
-//	public ResponseEntity<Utensilio> createUsuario(@Validated(NaCriacao.class) @RequestBody Utensilio utensilio) throws Throwable {
-//		
-//		if (utensilioRepository.findByNome(utensilio.getNome()) != null)
-//			throw new ObjetoJaExisteException("Utensilio com nome '" + .getNome() + "' já existe");
-//		
-//       utensilio.setNome(utensilio.getNome());
-//        
-//		Utensilio novoUtensilio = utensilioRepository.save(utensilio);
-//		
-//		return ResponseEntity.status(HttpStatus.CREATED).body(novoUtensilio);
-//    }
-//    
+   @PostMapping
+	public ResponseEntity<Utensilio> createUsuario(@Validated(NaCriacao.class) @RequestBody Utensilio utensilio) throws Throwable {
+		
+		if (utensilioRepository.findByNome(utensilio.getNome()) != null)
+			throw new ObjetoJaExisteException("Utensilio com nome '" + utensilio.getNome() + "' já existe");
+		
+      utensilio.setNome(utensilio.getNome());
+       
+		Utensilio novoUtensilio = utensilioRepository.save(utensilio);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(novoUtensilio);
+   }
+	
     @PatchMapping
 	public ResponseEntity<Utensilio> updateUtensilio(@Validated(NaAtualizacao.class) @RequestBody Utensilio utensilioAtualizado) throws Throwable {
 		Utensilio utensilio = utensilioRepository.findById(utensilioAtualizado.getId()).get();
@@ -66,12 +68,12 @@ public class UtensilioController {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 	}
 	
-//	@GetMapping
-//	public ResponseEntity<Iterable<Utensilio>> findAllUtensilios() {
-//		Iterable<Utensilio> utensilios = utensilioRepository.findAll();
-//		return ResponseEntity.status(HttpStatus.OK).body(utensilio);
-//    }
-    
+	@GetMapping
+	public ResponseEntity<Iterable<Utensilio>> findAllUtensilios() {
+		Iterable<Utensilio> utensilios = utensilioRepository.findAll();
+		return ResponseEntity.status(HttpStatus.OK).body(utensilio);
+   }
+	
     @GetMapping("id/{id}")
 	public ResponseEntity<Utensilio> findUtensiliosbyId(@PathVariable int id) {
 
