@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor
-public class CriteriosDeBusca {
+public class CriteriosDeBuscaDTO {
 	
 	private List<Integer> produtos;
 	private List<Integer> utensilios;

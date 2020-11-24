@@ -23,7 +23,7 @@ import br.com.instafood.api.validators.NaCriacao;
 import br.com.instafood.api.validators.NaAtualizacao;
 
 @RestController
-@RequestMapping("tags")
+@RequestMapping("api/tags")
 public class TagController {
 
     @Autowired

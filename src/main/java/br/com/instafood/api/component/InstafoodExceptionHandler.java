@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import br.com.instafood.api.model.errors.MensagemDeErro;
 import br.com.instafood.api.model.errors.ObjetoJaExisteException;
 import br.com.instafood.api.model.errors.ObjetoNaoEncontradoException;
+import io.jsonwebtoken.JwtException;
 
 /**
  * O objetivo dessa classe é uniformizar o tratamento de erros 
@@ -66,6 +68,18 @@ public class InstafoodExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler({ ObjetoJaExisteException.class })
 	public ResponseEntity<Object> handleObjetoNaoEncontrado(ObjetoJaExisteException ex, WebRequest request) {
 		MensagemDeErro erro = new MensagemDeErro(HttpStatus.NOT_ACCEPTABLE, ex.getMessage(), ex);
+		return handleExceptionInternal(ex, erro, new HttpHeaders(), erro.getStatus(), request);
+	}
+	
+	@ExceptionHandler({ JwtException.class })
+	public ResponseEntity<?> handleJwtException(JwtException ex, WebRequest request) {
+		MensagemDeErro erro = new MensagemDeErro(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
+		return handleExceptionInternal(ex, erro, new HttpHeaders(), erro.getStatus(), request);
+	}
+	
+	@ExceptionHandler(value = { AuthenticationException.class })
+	public ResponseEntity<?> handleAuthenticationException(AuthenticationException ex, WebRequest request) {
+		MensagemDeErro erro = new MensagemDeErro(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
 		return handleExceptionInternal(ex, erro, new HttpHeaders(), erro.getStatus(), request);
 	}
 }

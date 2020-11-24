@@ -18,19 +18,18 @@ import br.com.instafood.api.model.Produto;
 import br.com.instafood.api.model.errors.ObjetoJaExisteException;
 import br.com.instafood.api.model.errors.ObjetoNaoEncontradoException;
 import br.com.instafood.api.repository.ProdutoRepository;
-import br.com.instafood.api.validators.NaCriacao;
 
 import br.com.instafood.api.validators.NaAtualizacao;
 
 @RestController
-@RequestMapping("produtos")
+@RequestMapping("api/produtos")
 public class ProdutoController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
     
     @PostMapping
-	public ResponseEntity<Produto> createProduto(@Validated(NaCriacao.class) @RequestBody Produto produto) throws Throwable {
+	public ResponseEntity<Produto> createProduto(@Validated @RequestBody Produto produto) throws Throwable {
 		
 		if (produtoRepository.findByNome(produto.getNome()) != null)
 			throw new ObjetoJaExisteException("Produto com nome '" + produto.getNome() + "' já existe");

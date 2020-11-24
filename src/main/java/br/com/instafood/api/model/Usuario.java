@@ -1,6 +1,6 @@
 package br.com.instafood.api.model;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +13,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import br.com.instafood.api.validators.annotations.ConfirmacaoDeSenha;
 import br.com.instafood.api.validators.NaCriacao;
+import br.com.instafood.api.validators.NaTrocaDeSenha;
 import br.com.instafood.api.validators.NaAtualizacao;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,7 +31,7 @@ import lombok.ToString;
 @Getter @Setter @ToString @NoArgsConstructor
 @ConfirmacaoDeSenha(campos = { "senha", "confirmacaoSenha" }, 
 	message = "As senhas devem ser iguais", 
-	groups = { NaCriacao.class })
+	groups = { NaCriacao.class, NaTrocaDeSenha.class })
 public class Usuario {
 
 	@Id @Column
@@ -48,9 +47,9 @@ public class Usuario {
 	
 	@Column(unique = true)
 	@NotEmpty(message = "O campo email não pode ser nulo", 
-		groups = { NaCriacao.class, NaAtualizacao.class })
+		groups = { NaCriacao.class })
 	@Email(message = "O campo email deve conter um e-mail válido", 
-		groups = { NaCriacao.class, NaAtualizacao.class })
+		groups = { NaCriacao.class })
 	private String email;
 	
 	@Column
@@ -58,30 +57,32 @@ public class Usuario {
 	
 	@Column
 	@ToString.Exclude
-	//@JsonProperty(access = Access.WRITE_ONLY)
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@NotNull(message = "O campo senha não pode ser nulo", 
-		groups = { NaCriacao.class })
+		groups = { NaCriacao.class, NaTrocaDeSenha.class })
 	@Size(min = 6, max = 16, message = "O campo senha deve conter entre 6 e 16 caracteres", 
-		groups = NaCriacao.class)
+		groups = { NaCriacao.class, NaTrocaDeSenha.class })
 	private String senha;
 	
 	@Transient
 	@ToString.Exclude
-	//@JsonProperty(access = Access.WRITE_ONLY)
+	@JsonProperty(access = Access.WRITE_ONLY)
 	@NotNull(message = "O campo confirmação de senha não pode ser nulo", 
-		groups = { NaCriacao.class })
+		groups = { NaCriacao.class, NaTrocaDeSenha.class })
 	@Size(min = 6, max = 16, message = "O campo confirmação de senha deve conter entre 6 e 16 caracteres", 
-		groups = NaCriacao.class)
+		groups = { NaCriacao.class, NaTrocaDeSenha.class })
 	private String confirmacaoSenha;
 	
-	@Column(columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP")
+	@Column
 	@JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
-	private LocalDateTime dataCriacao;
+	private Date dataCriacao;
 	
 	@Column
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private boolean ativo;
 	
 	@Column
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private boolean confirmado;
 	
 	@Column(columnDefinition = "ENUM('ADMIN', 'USER')")
