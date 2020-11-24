@@ -21,8 +21,6 @@ public class MensagemDeErro {
 	private String mensagem;
 	
 	private String debug;
-	
-	//private List<ApiSubError> erros;
 		
 	private MensagemDeErro() {
 	    timestamp = new Date();

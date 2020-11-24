@@ -1,4 +1,4 @@
-package br.com.instafood.api.config;
+package br.com.instafood.api.component;
 
 import java.io.IOException;
 

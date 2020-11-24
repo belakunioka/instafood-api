@@ -1,4 +1,4 @@
-package br.com.instafood.api.service;
+package br.com.instafood.api.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +16,11 @@ import javax.swing.text.html.HTML.Tag;
 
 import org.springframework.stereotype.Service;
 
-import br.com.instafood.api.model.CriteriosDeBusca;
+import br.com.instafood.api.model.CriteriosDeBuscaDTO;
 import br.com.instafood.api.model.Produto;
 import br.com.instafood.api.model.Receita;
 import br.com.instafood.api.model.Utensilio;
+import br.com.instafood.api.service.ReceitaService;
 
 @Service
 public class ReceitaServiceImpl implements ReceitaService {
@@ -28,7 +29,7 @@ public class ReceitaServiceImpl implements ReceitaService {
 	private EntityManager entityManager;
 
 	@Override
-	public List<Receita> buscarReceitas(CriteriosDeBusca criterios) {
+	public List<Receita> buscarReceitas(CriteriosDeBuscaDTO criterios) {
 		// TODO Auto-generated method stub
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Receita> receitaQuery = builder.createQuery(Receita.class);

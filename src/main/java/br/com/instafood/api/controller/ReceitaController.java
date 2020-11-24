@@ -25,17 +25,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import br.com.instafood.api.model.CriteriosDeBusca;
+import br.com.instafood.api.model.CriteriosDeBuscaDTO;
 import br.com.instafood.api.model.Receita;
 import br.com.instafood.api.model.errors.ObjetoNaoEncontradoException;
 import br.com.instafood.api.repository.ReceitaRepository;
 import br.com.instafood.api.service.ReceitaService;
 
 @RestController
-@RequestMapping("receitas")
+@RequestMapping("api/receitas")
 public class ReceitaController {
 	
-	@Value("${receitas.upload-dir}")
+	@Value("${files.upload-dir}")
 	private String diretorioUpload;
 	
 	@Autowired
@@ -99,7 +99,7 @@ public class ReceitaController {
 	}
 
 	@PostMapping("busca")
-	public ResponseEntity<?> findAllByParams(@RequestBody CriteriosDeBusca criterios){
+	public ResponseEntity<?> findAllByParams(@RequestBody CriteriosDeBuscaDTO criterios){
 		List<Receita> receitas = receitaService.buscarReceitas(criterios);
 		
 		PagedListHolder<Receita> pagina = new PagedListHolder<Receita>(receitas);

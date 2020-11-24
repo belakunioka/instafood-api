@@ -28,7 +28,6 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-
 public class Receita {
 	
 	@Id @Column(name = "id")

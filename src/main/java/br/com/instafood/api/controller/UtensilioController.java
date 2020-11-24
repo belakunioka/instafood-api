@@ -25,7 +25,7 @@ import br.com.instafood.api.validators.NaAtualizacao;
 
 
 @RestController
-@RequestMapping("utensilio")
+@RequestMapping("api/utensilios")
 public class UtensilioController {
 
     @Autowired
@@ -71,7 +71,7 @@ public class UtensilioController {
 	@GetMapping
 	public ResponseEntity<Iterable<Utensilio>> findAllUtensilios() {
 		Iterable<Utensilio> utensilios = utensilioRepository.findAll();
-		return ResponseEntity.status(HttpStatus.OK).body(utensilio);
+		return ResponseEntity.status(HttpStatus.OK).body(utensilios);
    }
 	
     @GetMapping("id/{id}")

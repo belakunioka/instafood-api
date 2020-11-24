@@ -23,7 +23,7 @@ public class Ingrediente {
     @Getter private int id;
 	
 	@ManyToOne
-	@JoinColumn(nullable=false)
+	@JoinColumn(nullable = false)
 	@JsonBackReference
 	@Getter @Setter private Receita receita;
 	
@@ -31,7 +31,7 @@ public class Ingrediente {
 	@JoinColumn(nullable = false)
 	@Getter @Setter private Produto produto;
 	
-	@Column(columnDefinition = "DECIMAL(2, 5) DEFAULT 0.0")
+	@Column(columnDefinition = "DECIMAL(5, 2) DEFAULT 0.0")
 	@Getter @Setter private int quantidade;
 	
 	@Getter @Setter private String unidade;
