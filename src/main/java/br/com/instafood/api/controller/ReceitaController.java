@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -27,8 +29,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.instafood.api.model.CriteriosDeBuscaDTO;
 import br.com.instafood.api.model.Receita;
+import br.com.instafood.api.model.Usuario;
 import br.com.instafood.api.model.errors.ObjetoNaoEncontradoException;
 import br.com.instafood.api.repository.ReceitaRepository;
+import br.com.instafood.api.repository.UsuarioRepository;
 import br.com.instafood.api.service.ReceitaService;
 
 @RestController
@@ -40,12 +44,27 @@ public class ReceitaController {
 	
 	@Autowired
 	public ReceitaRepository receitaRepository;
+	public UsuarioRepository usuarioRepository;	
 	
 	@Autowired
 	public ReceitaService receitaService;
 	
+	private Usuario getLoggedUser(Authentication authentication) {
+		try {
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			return usuarioRepository.findByEmail(userDetails.getUsername());
+		} catch (NullPointerException ex) {
+			return null;
+		}
+	}
+		
+	
 	@PostMapping
-	public ResponseEntity<Receita> createReceita(@RequestBody Receita receita) {
+	public ResponseEntity<Receita> createReceita(Authentication authentication, @RequestBody Receita receita) {
+		
+		Usuario usuario = getLoggedUser(authentication);
+		if (usuario == null)
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		
 		receita.setDataCriacao(new Date());
 		Receita novaReceita = receitaRepository.save(receita);
@@ -54,9 +73,14 @@ public class ReceitaController {
 	}
 	
 	@PatchMapping("receita/imagem")
-	public ResponseEntity<Object> uploadImagemReceita(@RequestParam int id, @RequestParam MultipartFile imagem) throws Throwable {
+	public ResponseEntity<Object> uploadImagemReceita(Authentication authentication, @RequestParam int id, @RequestParam MultipartFile imagem) throws Throwable {
+		
+		Usuario usuario = getLoggedUser(authentication);
+		if (usuario == null)
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		
 		String extensao = FilenameUtils.getExtension(imagem.getOriginalFilename());
-		String nomeDoArquivo = "receita" + id + "." + extensao;
+		String nomeDoArquivo = "receita" + usuario.getId() + "." + extensao;
 		Path caminho = Paths.get(diretorioUpload + File.separator + nomeDoArquivo);
 		Files.copy(imagem.getInputStream(), caminho, StandardCopyOption.REPLACE_EXISTING);
 		Receita receita = receitaRepository.findById(id);
@@ -67,7 +91,12 @@ public class ReceitaController {
 	}
 	
 	@PatchMapping
-	public ResponseEntity<Receita> updateReceita(@RequestBody Receita receitaAtualizada) {
+	public ResponseEntity<Receita> updateReceita(Authentication authentication, @RequestBody Receita receitaAtualizada) {
+		
+		Usuario usuario = getLoggedUser(authentication);
+		if (usuario == null)
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		
 		Receita receita = receitaRepository.findById(receitaAtualizada.getId());
 		
 		receitaRepository.save(receita);
@@ -75,10 +104,15 @@ public class ReceitaController {
 	}
 	
 	@DeleteMapping("{id}")
-	public ResponseEntity<Object> deleteReceita(@PathVariable int id) throws Throwable {
+	public ResponseEntity<Object> deleteReceita(Authentication authentication, @PathVariable int id) throws Throwable {
+		
+		
+		Usuario usuario = getLoggedUser(authentication);
+		if (usuario == null)
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		
 		if (!receitaRepository.existsById(id))
-			throw new ObjetoNaoEncontradoException("Receita ID: " + id + " não foi encontrada.");
+			throw new ObjetoNaoEncontradoException("Receita não encontrada.");
 		
 		receitaRepository.deleteById(id);
 		
