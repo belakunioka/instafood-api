@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -36,6 +37,7 @@ import br.com.instafood.api.repository.UsuarioRepository;
 import br.com.instafood.api.service.ReceitaService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("api/receitas")
 public class ReceitaController {
 	
@@ -57,7 +59,6 @@ public class ReceitaController {
 			return null;
 		}
 	}
-		
 	
 	@PostMapping
 	public ResponseEntity<Receita> createReceita(Authentication authentication, @RequestBody Receita receita) {
@@ -67,23 +68,26 @@ public class ReceitaController {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		
 		receita.setDataCriacao(new Date());
+		receita.setUsuario(usuario);
+		receita.setImagem(receita.getImagem());
 		Receita novaReceita = receitaRepository.save(receita);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(novaReceita);
 	}
 	
-	@PatchMapping("receita/imagem")
-	public ResponseEntity<Object> uploadImagemReceita(Authentication authentication, @RequestParam int id, @RequestParam MultipartFile imagem) throws Throwable {
+	@PatchMapping("/receita/imagem/")
+	public ResponseEntity<Object> uploadImagemReceita(Authentication authentication, @RequestBody Receita receitaImagem, 
+			@RequestParam MultipartFile imagem) throws Throwable {
 		
 		Usuario usuario = getLoggedUser(authentication);
 		if (usuario == null)
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		
+		Receita receita = receitaRepository.findById(receitaImagem.getId());
 		String extensao = FilenameUtils.getExtension(imagem.getOriginalFilename());
-		String nomeDoArquivo = "receita" + usuario.getId() + "." + extensao;
+		String nomeDoArquivo = "receita" + receita.getId() + "." + extensao;
 		Path caminho = Paths.get(diretorioUpload + File.separator + nomeDoArquivo);
 		Files.copy(imagem.getInputStream(), caminho, StandardCopyOption.REPLACE_EXISTING);
-		Receita receita = receitaRepository.findById(id);
 		receita.setImagem(nomeDoArquivo);
 		receitaRepository.save(receita);
 		
