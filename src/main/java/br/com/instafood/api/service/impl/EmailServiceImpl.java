@@ -22,7 +22,7 @@ public class EmailServiceImpl implements EmailService {
 		String texto = "Olá " + nome + "! Você recebeu este e-mail "
 				+ "pois se cadastrou em nosso site. Por favor, clique no link "
 				+ "abaixo e confirme sua conta.\n"
-				+ "http://localhost:8080/confirmar.html?token="
+				+ "http://127.0.0.1:5500/confirmar.html?token="
 				+ usuario.getTokenConfirmarConta();
 		
 		sendEmail(nome, usuario.getEmail(), titulo, texto);
@@ -32,7 +32,7 @@ public class EmailServiceImpl implements EmailService {
 	public void sendEmailBemvindo(Usuario usuario) {
 		String nome = usuario.getNome().split(" ")[0];
 		String titulo = "Bem-vindo ao Instafood";
-		String texto = "Olá " + nome + "! Aqui você pode...";
+		String texto = "Olá " + nome + "! Bem-vindo ao Instafood!";
 		
 		sendEmail(nome, usuario.getEmail(), titulo, texto);
 	}
@@ -44,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
 		String texto = "Olá " + nome + "! Você recebeu este e-mail "
 				+ "pois solicitou troca de senha em nosso site. Por favor, "
 				+ "clique no link abaixo e redefina sua senha.\n"
-				+ "http://localhost:8080/redefinir.html?token="
+				+ "http://127.0.01:5500/redefinir.html?token="
 				+ usuario.getTokenRedefinirSenha();
 		
 		sendEmail(nome, usuario.getEmail(), titulo, texto);

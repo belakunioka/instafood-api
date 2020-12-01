@@ -6,6 +6,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -18,7 +21,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import br.com.instafood.api.model.errors.MensagemDeErro;
 import br.com.instafood.api.model.errors.ObjetoJaExisteException;
 import br.com.instafood.api.model.errors.ObjetoNaoEncontradoException;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.SignatureException;
 
 /**
  * O objetivo dessa classe é uniformizar o tratamento de erros 
@@ -71,12 +76,41 @@ public class InstafoodExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, erro, new HttpHeaders(), erro.getStatus(), request);
 	}
 	
-	@ExceptionHandler({ JwtException.class })
+	@ExceptionHandler({ ExpiredJwtException.class })
 	public ResponseEntity<?> handleJwtException(JwtException ex, WebRequest request) {
-		MensagemDeErro erro = new MensagemDeErro(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
+		String mensagem = "Seu token expirou! Solicite novamente um token para troca de senha";
+		MensagemDeErro erro = new MensagemDeErro(HttpStatus.BAD_REQUEST, "TOKEN_EXPIRADO", mensagem, ex);
 		return handleExceptionInternal(ex, erro, new HttpHeaders(), erro.getStatus(), request);
 	}
 	
+	@ExceptionHandler(value = { DisabledException.class })
+	public ResponseEntity<?> handleDisabledException(AuthenticationException ex, WebRequest request) {
+		String mensagem = "Uma conta com esse e-mail já existe e está desativada";
+		MensagemDeErro erro = new MensagemDeErro(HttpStatus.BAD_REQUEST, mensagem, ex);
+		return handleExceptionInternal(ex, erro, new HttpHeaders(), erro.getStatus(), request);
+	}
+	
+	@ExceptionHandler(value = { SignatureException.class })
+	public ResponseEntity<?> handleSignatureException(AuthenticationException ex, WebRequest request) {
+		String mensagem = "Token inválido! Se você já confirmou sua conta, faça login";
+		MensagemDeErro erro = new MensagemDeErro(HttpStatus.BAD_REQUEST, mensagem, ex);
+		return handleExceptionInternal(ex, erro, new HttpHeaders(), erro.getStatus(), request);
+	}
+	
+	@ExceptionHandler(value = { LockedException.class })
+	public ResponseEntity<?> handleLockedException(AuthenticationException ex, WebRequest request) {
+		String mensagem = "Uma conta com esse e-mail já existe e não está confirmada. Por favor, confirme sua conta";
+		MensagemDeErro erro = new MensagemDeErro(HttpStatus.BAD_REQUEST, mensagem, ex);
+		return handleExceptionInternal(ex, erro, new HttpHeaders(), erro.getStatus(), request);
+	}
+	
+	@ExceptionHandler(value = { BadCredentialsException.class })
+	public ResponseEntity<?> handleBadCredentialsException(AuthenticationException ex, WebRequest request) {
+		String mensagem = "Usuário ou senha incorretos";
+		MensagemDeErro erro = new MensagemDeErro(HttpStatus.BAD_REQUEST, mensagem, ex);
+		return handleExceptionInternal(ex, erro, new HttpHeaders(), erro.getStatus(), request);
+	}
+
 	@ExceptionHandler(value = { AuthenticationException.class })
 	public ResponseEntity<?> handleAuthenticationException(AuthenticationException ex, WebRequest request) {
 		MensagemDeErro erro = new MensagemDeErro(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);

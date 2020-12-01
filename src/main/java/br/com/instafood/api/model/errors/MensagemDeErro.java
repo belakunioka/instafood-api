@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
-// TODO Personalizar a mensagem de acordo com o modo
 @Getter @Setter
 public class MensagemDeErro {
 
@@ -17,6 +16,8 @@ public class MensagemDeErro {
 	
 	@JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
 	private Date timestamp;
+	
+	private String codigo;
 	
 	private String mensagem;
 	
@@ -41,6 +42,14 @@ public class MensagemDeErro {
 	public MensagemDeErro(HttpStatus status, String mensagem, Throwable ex) {
 	    this();
 	    this.status = status;
+	    this.mensagem = mensagem;
+	    this.debug = ex.getLocalizedMessage();
+	}
+	
+	public MensagemDeErro(HttpStatus status, String codigo, String mensagem, Throwable ex) {
+	    this();
+	    this.status = status;
+	    this.codigo = codigo;
 	    this.mensagem = mensagem;
 	    this.debug = ex.getLocalizedMessage();
 	}
