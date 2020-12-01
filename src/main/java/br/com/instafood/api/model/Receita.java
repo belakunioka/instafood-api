@@ -65,7 +65,7 @@ public class Receita {
 	@ManyToOne
 	@NotNull
 	@JoinColumn(name = "usuario_id", insertable=false, updatable=false)
-	private Usuario usuario;
+		private Usuario usuario;
 	
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name="receita_utensilio", joinColumns = {
