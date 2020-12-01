@@ -145,5 +145,10 @@ public class ReceitaController {
 		pagina.setPage(criterios.getPagina());
 		
 		return ResponseEntity.status(HttpStatus.OK).body(pagina.getPageList());
-	}	
+	}
+	
+	@GetMapping("tipo")
+	public List<Receita> getReceitasByTipo(String tipo){
+		return receitaRepository.findByTipo(tipo);
+	}
 }
