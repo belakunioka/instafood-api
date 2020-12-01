@@ -75,15 +75,15 @@ public class ReceitaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(novaReceita);
 	}
 	
-	@PatchMapping("/receita/imagem/")
-	public ResponseEntity<Object> uploadImagemReceita(Authentication authentication, @RequestBody Receita receitaImagem, 
+	@PatchMapping("/receita/imagem/{id}")
+	public ResponseEntity<Object> uploadImagemReceita(Authentication authentication, @PathVariable int id, 
 			@RequestParam MultipartFile imagem) throws Throwable {
 		
 		Usuario usuario = getLoggedUser(authentication);
 		if (usuario == null)
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		
-		Receita receita = receitaRepository.findById(receitaImagem.getId());
+		Receita receita = receitaRepository.findById(id);
 		String extensao = FilenameUtils.getExtension(imagem.getOriginalFilename());
 		String nomeDoArquivo = "receita" + receita.getId() + "." + extensao;
 		Path caminho = Paths.get(diretorioUpload + File.separator + nomeDoArquivo);
