@@ -11,6 +11,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,7 +25,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -116,7 +116,7 @@ public class UsuarioController {
 		novoUsuario.setConfirmado(false);
 		novoUsuario.setDataCriacao(new Date());
 		novoUsuario.setPerfil("USER");
-		novoUsuario.setImagem("/img/usuarios/undefined.jpg");
+		novoUsuario.setImagem("undefined.jpg");
 		novoUsuario.setSenha(passwordEncoder.encode(novoUsuario.getSenha()));
 				
 		// Gera o token que será enviado para o email do usuário
@@ -220,10 +220,8 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("perfil")
-	public ResponseEntity<?> getUsuarioLogado(Authentication authentication) {
+	public ResponseEntity<?> getUsuarioLogado(Authentication authentication) throws UsernameNotFoundException {
 		Usuario usuario = getLoggedUser(authentication);
-		if (usuario == null)
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(usuario);	
 	}
 	
@@ -253,7 +251,7 @@ public class UsuarioController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
 	}
 	
-	@PatchMapping("perfil/imagem")
+	@PostMapping(value = "perfil/imagem", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<Object> uploadImagemUsuario(Authentication authentication, 
 			@RequestParam MultipartFile imagem) throws Throwable {
 		
@@ -265,10 +263,10 @@ public class UsuarioController {
 		String extensao = FilenameUtils.getExtension(imagem.getOriginalFilename());
 		
 		// Constrói o nome do arquivo baseado no id do usuário
-		String nomeDoArquivo = "usuario" + usuario.getId() + "." + extensao;
+		String nomeDoArquivo = usuario.getId() + "." + extensao;
 		
 		// Salva o arquivo na pasta de imagens
-		Path caminho = Paths.get(diretorioUpload + File.separator + nomeDoArquivo);
+		Path caminho = Paths.get(diretorioUpload + File.separator + "usuarios" + File.separator + nomeDoArquivo);
 		Files.copy(imagem.getInputStream(), caminho, StandardCopyOption.REPLACE_EXISTING);
 		
 		// Salva o nome da imagem no perfil do usuário (vai ser sempre o mesmo nome)
