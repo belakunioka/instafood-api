@@ -1,7 +1,7 @@
 USE instafood;
 
-INSERT INTO usuario (nome, email, senha, data_criacao, ativo, confirmado) VALUES ("Maria Joana", "maria.joana@gmail.com", "$2a$10$/dyTAdrrjgF5SB6wmXdvCOM1C2iG5J0onGlcGp1Eiq2TEbcwGNnWW", NOW(), TRUE, TRUE);
-INSERT INTO usuario (nome, email, senha, data_criacao, ativo, confirmado) VALUES ("Jose Luiz", "jose.luiz@gmail.com", "$2a$10$b7aDLfOYo28wfXhzGrhOlu3gQRTrjNqNYKx60DTbvwiqpGmssmPDm", NOW(), TRUE, TRUE);
+INSERT INTO usuario (nome, perfil, email, senha, data_criacao, ativo, confirmado) VALUES ("Maria Joana", "USER", "maria.joana@gmail.com", "$2a$10$/dyTAdrrjgF5SB6wmXdvCOM1C2iG5J0onGlcGp1Eiq2TEbcwGNnWW", NOW(), TRUE, TRUE);
+INSERT INTO usuario (nome, perfil, email, senha, data_criacao, ativo, confirmado) VALUES ("Jose Luiz", "USER", "jose.luiz@gmail.com", "$2a$10$b7aDLfOYo28wfXhzGrhOlu3gQRTrjNqNYKx60DTbvwiqpGmssmPDm", NOW(), TRUE, TRUE);
 
 INSERT INTO utensilio (nome) VALUES ("Batedeira");
 INSERT INTO utensilio (nome) VALUES ("Forno");
@@ -46,7 +46,6 @@ INSERT INTO produto (nome) VALUES ("Água");
 INSERT INTO produto (nome) VALUES ("Azeite de oliva");
 INSERT INTO produto (nome) VALUES ("Macarrão");
 INSERT INTO produto (nome) VALUES ("Bacon");
-INSERT INTO produto (nome) VALUES ("Creme de leite");
 INSERT INTO produto (nome) VALUES ("Farinha integral");
 INSERT INTO produto (nome) VALUES ("Pimentão verde");
 INSERT INTO produto (nome) VALUES ("Pimentão vermelho");
