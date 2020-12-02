@@ -1,5 +1,6 @@
 package br.com.instafood.api.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +28,7 @@ public class Ingrediente {
 	@JsonBackReference
 	@Getter @Setter private Receita receita;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(nullable = false)
 	@Getter @Setter private Produto produto;
 	

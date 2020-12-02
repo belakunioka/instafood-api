@@ -1,7 +1,7 @@
 USE instafood;
 
-INSERT INTO usuario (nome, email, senha, data_criacao, ativo, confirmado) VALUES ("Maria Joana", "maria.joana@gmail.com", "test1234", NOW(), TRUE, TRUE);
-INSERT INTO usuario (nome, email, senha, data_criacao, ativo, confirmado) VALUES ("Jose Luiz", "jose.luiz@gmail.com", "test1234", NOW(), TRUE, TRUE);
+INSERT INTO usuario (nome, email, senha, data_criacao, ativo, confirmado) VALUES ("Maria Joana", "maria.joana@gmail.com", "$2a$10$/dyTAdrrjgF5SB6wmXdvCOM1C2iG5J0onGlcGp1Eiq2TEbcwGNnWW", NOW(), TRUE, TRUE);
+INSERT INTO usuario (nome, email, senha, data_criacao, ativo, confirmado) VALUES ("Jose Luiz", "jose.luiz@gmail.com", "$2a$10$b7aDLfOYo28wfXhzGrhOlu3gQRTrjNqNYKx60DTbvwiqpGmssmPDm", NOW(), TRUE, TRUE);
 
 INSERT INTO utensilio (nome) VALUES ("Batedeira");
 INSERT INTO utensilio (nome) VALUES ("Forma de Bolo");
