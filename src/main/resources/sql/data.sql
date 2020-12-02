@@ -4,11 +4,15 @@ INSERT INTO usuario (nome, email, senha, data_criacao, ativo, confirmado) VALUES
 INSERT INTO usuario (nome, email, senha, data_criacao, ativo, confirmado) VALUES ("Jose Luiz", "jose.luiz@gmail.com", "$2a$10$b7aDLfOYo28wfXhzGrhOlu3gQRTrjNqNYKx60DTbvwiqpGmssmPDm", NOW(), TRUE, TRUE);
 
 INSERT INTO utensilio (nome) VALUES ("Batedeira");
-INSERT INTO utensilio (nome) VALUES ("Forma de Bolo");
+INSERT INTO utensilio (nome) VALUES ("Forno");
 INSERT INTO utensilio (nome) VALUES ("Liquidificador");
-INSERT INTO utensilio (nome) VALUES ("Refratário");
+INSERT INTO utensilio (nome) VALUES ("Fogão");
+INSERT INTO utensilio (nome) VALUES ("Microondas");
 
 INSERT INTO tag (nome) VALUES ("Sem culpa");
+INSERT INTO tag (nome) VALUES ("Glúten free");
+INSERT INTO tag (nome) VALUES ("Lactose free");
+INSERT INTO tag (nome) VALUES ("Vegano");
 INSERT INTO tag (nome) VALUES ("Vegetariano");
 
 INSERT INTO produto (nome) VALUES ("Farinha de trigo");
@@ -30,6 +34,27 @@ INSERT INTO produto (nome) VALUES ("Tomate");
 INSERT INTO produto (nome) VALUES ("Sal");
 INSERT INTO produto (nome) VALUES ("Pimenta");
 INSERT INTO produto (nome) VALUES ("Queijo ralado");
+INSERT INTO produto (nome) VALUES ("Frango");
+INSERT INTO produto (nome) VALUES ("Abacate");
+INSERT INTO produto (nome) VALUES ("Cacau em pó");
+INSERT INTO produto (nome) VALUES ("Canela em pó");
+INSERT INTO produto (nome) VALUES ("Melado de cana");
+INSERT INTO produto (nome) VALUES ("Essência de baunilha");
+INSERT INTO produto (nome) VALUES ("Polvilho doce");
+INSERT INTO produto (nome) VALUES ("Polvilho azedo");
+INSERT INTO produto (nome) VALUES ("Água");
+INSERT INTO produto (nome) VALUES ("Azeite de oliva");
+INSERT INTO produto (nome) VALUES ("Macarrão");
+INSERT INTO produto (nome) VALUES ("Bacon");
+INSERT INTO produto (nome) VALUES ("Creme de leite");
+INSERT INTO produto (nome) VALUES ("Farinha integral");
+INSERT INTO produto (nome) VALUES ("Pimentão verde");
+INSERT INTO produto (nome) VALUES ("Pimentão vermelho");
+INSERT INTO produto (nome) VALUES ("Pimentão amarelo");
+INSERT INTO produto (nome) VALUES ("Molho shoyo");
+INSERT INTO produto (nome) VALUES ("Maizena");
+INSERT INTO produto (nome) VALUES ("Amendoim torrado");
+
 
 
 /*
