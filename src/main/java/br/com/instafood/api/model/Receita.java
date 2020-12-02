@@ -62,23 +62,23 @@ public class Receita {
 	@NotNull
 	private String instrucoes;
 	
-	@ManyToOne
 	@NotNull
-	@JoinColumn(name = "usuario_id", insertable=false, updatable=false)
-		private Usuario usuario;
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "usuario_id")
+	private Usuario usuario;
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinTable(name="receita_utensilio", joinColumns = {
 			@JoinColumn(name="receita_id", nullable=false)}, inverseJoinColumns = {
 					@JoinColumn(name="utensilio_id", nullable=false)
 	})
 	private List <Utensilio> utensilios = new ArrayList<Utensilio>();
 	
-	@OneToMany(mappedBy = "receita")
+	@OneToMany(mappedBy = "receita", cascade = CascadeType.ALL)
 	@JsonManagedReference
 	private List <Ingrediente> ingredientes = new ArrayList<Ingrediente>();
 	
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
 	@JoinTable(name="receita_tag", joinColumns = {
 			@JoinColumn(name="receita_id", nullable=false)}, inverseJoinColumns = {
 					@JoinColumn(name="tag_id", nullable=false)

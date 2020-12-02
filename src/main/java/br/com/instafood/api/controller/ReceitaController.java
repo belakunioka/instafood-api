@@ -64,12 +64,11 @@ public class ReceitaController {
 	public ResponseEntity<Receita> createReceita(Authentication authentication, @RequestBody Receita receita) {
 		
 		Usuario usuario = getLoggedUser(authentication);
-		if (usuario == null)
-			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+		
 		
 		receita.setDataCriacao(new Date());
-		receita.setUsuario(usuario);
-		receita.setImagem(receita.getImagem());
+		//receita.setUsuario(usuario);
+		receita.setImagem("undefined.jpg");
 		Receita novaReceita = receitaRepository.save(receita);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(novaReceita);
